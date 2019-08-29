@@ -6,13 +6,20 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import * as THREE from 'three';
+import HelloWorld from './components/textdemo.vue'
 
 export default {
   name: 'app',
   components: {
     HelloWorld
-  }
+  },
+  created() {
+  	window.THREE = THREE
+  	console.log('fff',THREE)
+  	  
+  	
+  },
 }
 </script>
 
