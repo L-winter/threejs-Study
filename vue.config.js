@@ -1,7 +1,7 @@
 let path = require('path')
-// const ThreeExamples = require('import-three-examples')
-function resolve (dir) {
-  return path.join(__dirname, dir)
+const ThreeExamples = require('import-three-examples')
+function resolve(dir) {
+	return path.join(__dirname, dir)
 }
 
 module.exports = {
@@ -17,16 +17,29 @@ module.exports = {
 	// compiler: false,
 	// webpack配置
 	// see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-	  chainWebpack: config => {
-		           // config.module
-		           //        .rule('obj')
-		           //        .test(/\.(fbx|obj)$/)
-		           //        .use('file-loader')
-		           //        .loader('file-loader')
-		             
-		config.resolve.alias
-		  .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-		  .set('static', path.resolve(__dirname, '../static')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+	chainWebpack: config => {
+		 config.module
+		      .rule('images')
+		        .use('url-loader')
+		          .loader('url-loader')
+		          .tap(options => Object.assign(options, { limit: 10240 }))
+		  config.resolve.alias
+		      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+		      .set('@static', resolve('static'))
+		//       .set('webVideoCtrl',resolve('src/assets/js/webVideoCtrl.js'))
+		//     config.entry('index')
+		//       .add('babel-polyfill')
+		
+		// '@': path.resolve(__dirname, './src'),
+		// '@static': path.resolve(__dirname, './src/static'),
+		// config.module
+		//        .rule('obj')
+		//        .test(/\.(fbx|obj)$/)
+		//        .use('file-loader')
+		//        .loader('file-loader')
+// 		config.resolve.alias
+// 			.set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+// 			.set('@static', path.resolve(__dirname, '../static')) // key,value自行定义，比如.set('@@', resolve('src/components'))
 		// ThreeExamples.forEach((v) => {
 		//         if (~v.use.indexOf('imports')) {
 		//             config.module
@@ -42,90 +55,112 @@ module.exports = {
 		//                 .loader(v.use)
 		//         }
 		//     })
-		
-	  },
-	configureWebpack: () => {
-		loaders:[
-			{test: /\.json$/,loader: 'json-loader'},
-			{
-				test:/\.css$/,
-				loader:'style-loader!css-loader!autoprefixer-loader'
-			},
-			{
-				test:/\.less$/,
-				loader:'style-loader!css-loader!autoprefixer-loader!less-loader'
-			},
-			{
-				test:/\.(jpg|png|svg|ttf|woff|woff2|gif)$/,
-				loader:'url-loader',
-				options:{
-					limit:8192,//4096以上生成文件,否则base64
-					name:'[name].[ext]'
-				}
-			},
-			{
-				test:/\.js$/,
-				loader:'babel-loader',
-				exclude:/node_modules/,
-				options:{
-					presets:['es2015'],
-					plugins:['transform-runtime']
-				}
-			},
-			{
-				test:/\.vue$/,
-				loader:'vue-loader'
-			},
-			{
-				test: require.resolve("three/examples/js/controls/OrbitControls"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/controls/OrbitControls"),
-				use: "exports-loader?THREE.OrbitControls"
-			},
-			{
-				test: require.resolve("three/examples/js/WebGL"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/WebGL"),
-				use: "exports-loader?THREE.WebGL"
-			},
-			{
-				test: require.resolve("three/examples/js/lights/RectAreaLightUniformsLib"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/lights/RectAreaLightUniformsLib"),
-				use: "exports-loader?THREE.RectAreaLightUniformsLib"
-			},
-			{
-				test: require.resolve("three/examples/js/controls/FlyControls"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/controls/FlyControls"),
-				use: "exports-loader?THREE.FlyControls"
-			},
-			{
-				test: require.resolve("three/examples/js/objects/Lensflare"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/objects/Lensflare"),
-				use: "exports-loader?THREE.Lensflare"
-			},
-			{
-				test: require.resolve("three/examples/js/utils/SceneUtils"),
-				use: "imports-loader?THREE=three"
-			},
-			{
-				test: require.resolve("three/examples/js/utils/SceneUtils"),
-				use: "exports-loader?THREE.SceneUtils"
-			}
-		]
 	},
+	configureWebpack: (config) => {
+
+		// Object.assign(config, {
+		// 	// 开发生产共同配置
+		// 	resolve: {
+		// 		alias: {
+		// 			'@': path.resolve(__dirname, './src'),
+		// 			'@static': path.resolve(__dirname, './src/static'),
+		// 			// loaders:[
+		// 			// 	{test: /\.json$/,loader: 'json-loader'},
+		// 			// 	{
+		// 			// 		test:/\.css$/,
+		// 			// 		loader:'style-loader!css-loader!autoprefixer-loader'
+		// 			// 	},
+		// 			// 	{
+		// 			// 		test:/\.less$/,
+		// 			// 		loader:'style-loader!css-loader!autoprefixer-loader!less-loader'
+		// 			// 	}
+		// 			// ]
+		// 		} // 别名配置
+		// 	}
+		// })
+	},
+	// configureWebpack: () => {
+	// 	loaders:[
+	// 		{test: /\.json$/,loader: 'json-loader'},
+	// 		{
+	// 			test:/\.css$/,
+	// 			loader:'style-loader!css-loader!autoprefixer-loader'
+	// 		},
+	// 		{
+	// 			test:/\.less$/,
+	// 			loader:'style-loader!css-loader!autoprefixer-loader!less-loader'
+	// 		},
+	// 		{
+	// 			test:/\.(jpg|png|svg|ttf|woff|woff2|gif)$/,
+	// 			loader:'url-loader',
+	// 			options:{
+	// 				limit:8192,//4096以上生成文件,否则base64
+	// 				name:'[name].[ext]'
+	// 			}
+	// 		},
+	// 		{
+	// 			test:/\.js$/,
+	// 			loader:'babel-loader',
+	// 			exclude:/node_modules/,
+	// 			options:{
+	// 				presets:['es2015'],
+	// 				plugins:['transform-runtime']
+	// 			}
+	// 		},
+	// 		{
+	// 			test:/\.vue$/,
+	// 			loader:'vue-loader'
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/controls/OrbitControls"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/controls/OrbitControls"),
+	// 			use: "exports-loader?THREE.OrbitControls"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/WebGL"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/WebGL"),
+	// 			use: "exports-loader?THREE.WebGL"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/lights/RectAreaLightUniformsLib"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/lights/RectAreaLightUniformsLib"),
+	// 			use: "exports-loader?THREE.RectAreaLightUniformsLib"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/controls/FlyControls"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/controls/FlyControls"),
+	// 			use: "exports-loader?THREE.FlyControls"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/objects/Lensflare"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/objects/Lensflare"),
+	// 			use: "exports-loader?THREE.Lensflare"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/utils/SceneUtils"),
+	// 			use: "imports-loader?THREE=three"
+	// 		},
+	// 		{
+	// 			test: require.resolve("three/examples/js/utils/SceneUtils"),
+	// 			use: "exports-loader?THREE.SceneUtils"
+	// 		}
+	// 	]
+	// },
 	// vue-loader 配置项
 	// https://vue-loader.vuejs.org/en/options.html
 	// vueLoader: {},
