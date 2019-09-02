@@ -24,7 +24,7 @@ module.exports = {
 		          .loader('url-loader')
 		          .tap(options => Object.assign(options, { limit: 10240 }))
 		  config.resolve.alias
-		      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+		      .set('@src', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
 		      .set('@static', resolve('static'))
 		//       .set('webVideoCtrl',resolve('src/assets/js/webVideoCtrl.js'))
 		//     config.entry('index')
