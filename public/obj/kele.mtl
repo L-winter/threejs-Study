@@ -1,0 +1,18 @@
+#  ==========================================================================
+#  Wavefront Material file
+#  Exported by Red-i Productions' "Riptide Pro"
+#  (a commercial plugin for Cinema 4D PC & Mac, R9.6 or later)
+#  
+#  Red-i Productions
+#  http://skinprops.com
+#  
+#  ==========================================================================
+
+newmtl Soda-Can-Metal
+Kd 0.117647 0.117647 0.117647
+illum 1
+
+newmtl Soda-Can-Metal-Illustration
+Kd 0.941176 0.941176 0.941176
+illum 1
+map_Kd soda-illustration.tif

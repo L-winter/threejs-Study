@@ -7,7 +7,7 @@
 
 <script>
 import * as THREE from 'three';
-import HelloWorld from './components/text.vue'
+import HelloWorld from './components/study/box.vue'
 
 export default {
   name: 'app',
