@@ -41,7 +41,7 @@
 				// camera.lookAt(new THREE.Vector3(0, 0, 0));
 				 // camera.position.set(0, 0, 8);
 				 camera.position.set(4, -3, 5);
-				camera.lookAt(new THREE.Vector3(1, 0, 0));
+				camera.lookAt(new THREE.Vector3(1, 0, 0)); //x、y、z3维视角
 				
 				scene.add(camera);
 

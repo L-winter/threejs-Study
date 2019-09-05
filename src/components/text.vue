@@ -66,7 +66,8 @@
 					g.computeBoundingBox();
 					//3D文字材质
 					var m = new THREE.MeshBasicMaterial({
-						color: 0xff0000
+						color: 0xff0000,
+						wireframe:true
 					});
 					var mesh = new THREE.Mesh(g, m);
 
