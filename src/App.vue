@@ -7,7 +7,7 @@
 
 <script>
 import * as THREE from 'three';
-import HelloWorld from './components/study/mesh.vue'
+import HelloWorld from './components/study/onceanimationbox.vue'
 
 export default {
   name: 'app',
