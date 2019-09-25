@@ -4,3 +4,4 @@ material  网格，修改xyz旋转等属性
 mesh  材质
 text  文字
 animation 动画
+amb光源

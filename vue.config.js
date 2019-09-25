@@ -1,5 +1,5 @@
 let path = require('path')
-const ThreeExamples = require('import-three-examples')
+// const ThreeExamples = require('import-three-examples')
 function resolve(dir) {
 	return path.join(__dirname, dir)
 }
@@ -165,7 +165,7 @@ module.exports = {
 	// https://vue-loader.vuejs.org/en/options.html
 	// vueLoader: {},
 	// 生产环境是否生成 sourceMap 文件
-	productionSourceMap: true,
+	productionSourceMap: false,
 	// css相关配置
 	css: {
 		// 是否使用css分离插件 ExtractTextPlugin
