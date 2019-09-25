@@ -1,13 +1,13 @@
 <template>
   <div id="app">
 
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld />
   </div>
 </template>
 
 <script>
-import * as THREE from 'three';
-import HelloWorld from './components/study/onceanimationbox.vue'
+// import * as THREE from 'three';
+import HelloWorld from './components/study/amb.vue'
 
 export default {
   name: 'app',
@@ -15,11 +15,11 @@ export default {
     HelloWorld
   },
   created() {
-  	window.THREE = THREE
-  	console.log('fff',THREE)
-  	  
-  	
-  },
+	// window.THREE = THREE
+	// console.log('fff',THREE)
+	
+	
+  }
 }
 </script>
 

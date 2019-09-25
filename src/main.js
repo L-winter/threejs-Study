@@ -1,14 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import * as THREE from 'three';
-window.THREE = THREE
-console.log('fff',THREE)
+// import * as THREE from 'three';
+// window.THREE = THREE;
+// console.log('fff',THREE)
 
 import './assets/lib/rem.js'
 import './assets/css/common.css'
-
-
 
 import FastClick from 'fastclick';
 FastClick.attach(document.body);

@@ -1,0 +1,6 @@
+box   几何形
+camera 相机
+material  网格，修改xyz旋转等属性
+mesh  材质
+text  文字
+animation 动画
