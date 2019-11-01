@@ -35,12 +35,12 @@
 			renderer.setClearColor(0xffffff);
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			this.renderer = renderer;
-			this.shadwMaterial()
+			this.ambMaterial()
 			// },5000)
 			// console.log()
 		},
 		methods: {
-			ambMaterial: function() { //环境光源全亮
+			ambMaterial: function() { //光源
 				let that = this;
 				// var renderer = null;
 				var mesh = null;
@@ -49,280 +49,49 @@
 				var camera = new THREE.PerspectiveCamera(40, 400 / 400, 1, 1000);
 				// camera.lookAt(new THREE.Vector3(0, 0, 0));
 				// camera.position.set(0, 0, 8);
-				camera.position.set(3, 18, 53);
-				camera.lookAt(new THREE.Vector3(0, 0, 0));
+				camera.position.set(4, 5, 33);
+				camera.lookAt(new THREE.Vector3(0, 3, 0));
 
 				scene.add(camera);
 
 				let loader = new THREE.OBJLoader();
 				
-				loader.load('obj/port.obj', function(obj) {
-				obj.traverse(function(child) {
-					if (child instanceof THREE.Mesh) {
-						child.material.side = THREE.DoubleSide;
-						child.material= new THREE.MeshLambertMaterial({color: 0xFFFFFF})
-					}
-				});
-				mesh = obj;
-				scene.add(obj);
-				});
-				// var plane = new THREE.Mesh(new THREE.PlaneGeometry(18, 18, 16, 16),new THREE.MeshLambertMaterial({color: 0xFF00FF}));
-				// plane.rotation.x = -Math.PI / 2;
-				// plane.position.y = -1;
-				// plane.receiveShadow = true;
-				// scene.add(plane);
-				var imgmap = THREE.ImageUtils.loadTexture('img/zk.jpg', {}, function() {
-					that.renderer.render(scene,camera);
+				let mtlLoader = new MTLLoader();
+				mtlLoader.load('obj/port.mtl', function(materials) {
+					materials.preload();
+					   loader.setMaterials(materials);   //重点***setMaterials
+					loader.load('obj/port.obj', function(object) {
+						mesh = object.children[0];
+						// scene.add(obj);
+						object.position.y = - 95;
+						// if has object, add to scene
+						if (object.children.length > 0) {
+							scene.add(object.children[0] );
+						}
+					})
 				})
-				
-				imgmap.wrapS = imgmap.wrapT = THREE.RepeatWrapping; //②设置 wrapS 和 wrapT 方向都重复
-				imgmap.repeat.set(3, 3); //②重复行列数
-				
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(18, 18, 16, 16),
-					new THREE.MeshLambertMaterial({
-						map: imgmap
-					}));
-				plane.rotation.x = -Math.PI / 2;
-				scene.add(plane);
 
 				// var light = new THREE.SpotLight(0xffff00,1,100,Math.PI / 6, 25);
 				// light.position.set(1, 1, 1);
 				// light.target = mesh;
 				// scene.add(light);
-				var light = new THREE.AmbientLight(0xff0000);
-				scene.add(light);
-
-				id = setInterval(draw, 20);
-
-				function draw() {
-					that.renderer.render(scene, camera);
-					mesh.rotation.y += 0.01;
-					if (mesh.rotation.y > Math.PI * 2) {
-						mesh.rotation.y -= Math.PI * 2;
-					}
-				}
-				this.renderer.render(scene, camera);
-			},
-			poMaterial: function() { //点光源,一个点的
-				let that = this;
-				// var renderer = null;
-				var mesh = null;
-				var id = null;
-				// canvas size is 400x300
-				var camera = new THREE.PerspectiveCamera(40, 400 / 400, 1, 1000);
-				// camera.lookAt(new THREE.Vector3(0, 0, 0));
-				// camera.position.set(0, 0, 8);
-				camera.position.set(3, 18, 53);
-				camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-				scene.add(camera);
-
-				let loader = new THREE.OBJLoader();
-				loader.load('obj/port.obj', function(obj) {
-				obj.traverse(function(child) {
-					if (child instanceof THREE.Mesh) {
-						child.material.side = THREE.DoubleSide;
-						child.material= new THREE.MeshLambertMaterial({color: 0xCCCCCC})
-					}
-				});
-				mesh = obj;
-				scene.add(obj);
-				});
-			
-				var imgmap = THREE.ImageUtils.loadTexture('img/zk.jpg', {}, function() {
-					that.renderer.render(scene, camera);
-				})
-				
-				imgmap.wrapS = imgmap.wrapT = THREE.RepeatWrapping; //②设置 wrapS 和 wrapT 方向都重复
-				imgmap.repeat.set(3, 3); //②重复行列数
-				
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(18, 18, 16, 16),
-					new THREE.MeshLambertMaterial({
-						map: imgmap
-					}));
-				plane.rotation.x = -Math.PI / 2;
-				scene.add(plane);
-
-				var light = new THREE.PointLight(0xffffff,2,100);
-				light.position.set(0, 1.5, 2);
-
-				scene.add(light);
-
-				id = setInterval(draw, 20);
-
-				function draw() {
-					that.renderer.render(scene, camera);
-					mesh.rotation.y += 0.01;
-					if (mesh.rotation.y > Math.PI * 2) {
-						mesh.rotation.y -= Math.PI * 2;
-					}
-				}
-				this.renderer.render(scene, camera);
-			},
-			direMaterial: function() { //点光源,一个点的
-				let that = this;
-				// var renderer = null;
-				var mesh = null;
-				var id = null;
-				// canvas size is 400x300
-				var camera = new THREE.PerspectiveCamera(40, 400 / 400, 1, 1000);
-				// camera.lookAt(new THREE.Vector3(0, 0, 0));
-				// camera.position.set(0, 0, 8);
-				camera.position.set(3, 18, 53);
-				camera.lookAt(new THREE.Vector3(0, 0, 0));
-			
-				scene.add(camera);
-			
-				let loader = new THREE.OBJLoader();
-				loader.load('obj/port.obj', function(obj) {
-				obj.traverse(function(child) {
-					if (child instanceof THREE.Mesh) {
-						child.material.side = THREE.DoubleSide;
-						child.material= new THREE.MeshLambertMaterial({color: 0xCCCCCC})
-					}
-				});
-				mesh = obj;
-				scene.add(obj);
-				});
-			
-				var imgmap = THREE.ImageUtils.loadTexture('img/zk.jpg', {}, function() {
-					that.renderer.render(scene, camera);
-				})
-				
-				imgmap.wrapS = imgmap.wrapT = THREE.RepeatWrapping; //②设置 wrapS 和 wrapT 方向都重复
-				imgmap.repeat.set(3, 3); //②重复行列数
-				
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(18, 18, 16, 16),
-					new THREE.MeshLambertMaterial({
-						map: imgmap
-					}));
-				plane.rotation.x = -Math.PI / 2;
-				scene.add(plane);
-			
-				var light = new THREE.DirectionalLight(0xffffff,1);
-				light.position.set(0, 1.5, 2);
-			
-				scene.add(light);
-			
-				id = setInterval(draw, 20);
-			
-				function draw() {
-					that.renderer.render(scene, camera);
-					mesh.rotation.y += 0.01;
-					if (mesh.rotation.y > Math.PI * 2) {
-						mesh.rotation.y -= Math.PI * 2;
-					}
-				}
-				this.renderer.render(scene, camera);
-			},
-			spoMaterial: function() { //聚光光源，类似舞台的打灯
-				let that = this;
-				// var renderer = null;
-				var mesh = null;
-				var id = null;
-				// canvas size is 400x300
-				var camera = new THREE.PerspectiveCamera(40, 400 / 400, 1, 1000);
-				// camera.lookAt(new THREE.Vector3(0, 0, 0));
-				// camera.position.set(0, 0, 8);
-				camera.position.set(1, 10, 14);
-				camera.lookAt(new THREE.Vector3(0, 0, 0));
-				scene.add(camera);
-			
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(8, 8, 16, 16),
-				        new THREE.MeshLambertMaterial({color: 0xcccccc}));
-				plane.rotation.x = -Math.PI / 2;
-				plane.position.y = -1;
-				plane.receiveShadow = true;
-				scene.add(plane);
-				
-				mesh = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1),
-				        new THREE.MeshLambertMaterial({color: 0x00ff00}));
-				scene.add(mesh);
-				// var light = new THREE.SpotLight(0xffff00,1,100,Math.PI / 6, 25);
-				// light.position.set(1, 1, 1);
-				// light.target = mesh;
-				// scene.add(light);
-				
-				// var light = new THREE.SpotLight(0xff0000, 8, 100, Math.PI / 3, 20);
-				// light.position.set(2, 5, 3);
-				// // light.target = mesh;
-				// light.castShadow = true;
-				// scene.add(light);
-				
-				var light = new THREE.SpotLight(0xffff00, 2, 10, Math.PI / 6, 25);
+				var light = new THREE.SpotLight(0xff0000, 8, 100, Math.PI / 3, 20);
 				light.position.set(2, 5, 3);
-				light.target = mesh;
+				// light.target = mesh;
 				light.castShadow = true;
 				scene.add(light);
-			
+
 				id = setInterval(draw, 20);
-			
+
 				function draw() {
 					that.renderer.render(scene, camera);
-					mesh.rotation.z += 0.01;
-					// mesh.rotation.x += 0.01;
+					mesh.rotation.y += 0.01;
 					if (mesh.rotation.y > Math.PI * 2) {
 						mesh.rotation.y -= Math.PI * 2;
 					}
 				}
-			
-			
-				this.renderer.render(scene, camera);
-			},
-			shadwMaterial: function() { //阴影，类似舞台的打灯
-				let that = this;
-				that.renderer.shadowMapEnabled = true;
-				// var renderer = null;
-				var mesh = null;
-				var id = null;
-				// canvas size is 400x300
-				var camera = new THREE.PerspectiveCamera(40, 400 / 400, 1, 1000);
-				// camera.lookAt(new THREE.Vector3(0, 0, 0));
-				// camera.position.set(0, 0, 8);
-				camera.position.set(1, 10, 14);
-				camera.lookAt(new THREE.Vector3(0, 0, 0));
-				scene.add(camera);
-			
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(8, 8, 16, 16),
-				        new THREE.MeshLambertMaterial({color: 0xcccccc}));
-				plane.rotation.x = -Math.PI / 2;
-				plane.position.y = -1;
-				plane.receiveShadow = true;
-				scene.add(plane);
-				
-				mesh = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1),
-				        new THREE.MeshLambertMaterial({color: 0x00ff00}));
-				mesh.castShadow = true;
-				scene.add(mesh);
-				// var light = new THREE.SpotLight(0xffff00,1,100,Math.PI / 6, 25);
-				// light.position.set(1, 1, 1);
-				// light.target = mesh;
-				// scene.add(light);
-				
-				// var light = new THREE.SpotLight(0xff0000, 8, 100, Math.PI / 3, 20);
-				// light.position.set(2, 5, 3);
-				// // light.target = mesh;
-				// light.castShadow = true;
-				// scene.add(light);
-				
-				var light = new THREE.SpotLight(0xffff00, 2, 10, Math.PI / 6, 25);
-				light.position.set(2, 5, 3);
-				light.target = mesh;
-				light.castShadow = true;
-				scene.add(light);
-			
-				id = setInterval(draw, 20);
-			
-				function draw() {
-					that.renderer.render(scene, camera);
-					mesh.rotation.z += 0.01;
-					// mesh.rotation.x += 0.01;
-					if (mesh.rotation.y > Math.PI * 2) {
-						mesh.rotation.y -= Math.PI * 2;
-					}
-				}
-			
-			
+
+
 				this.renderer.render(scene, camera);
 			}
 
