@@ -88,10 +88,29 @@ export default {
 			controls.update();
 			let root=undefined;
 			var loader = new GLTFLoader();
+				let cars = [];
 			loader.load('../obj/测试/scene.gltf', gltf => {
 				 root = gltf.scene;
 				scene.add(root);
+				// console.log(root)
+				console.log(dumpObject(root).join('\n'));
+				const loadedCars = root.getObjectByName('Disc');
 				// from root and below
+				for (const car of loadedCars.children.slice()) {
+					// id++
+					// const fix = fixes.find(fix => car.name.startsWith(fix.prefix));
+					const obj = new THREE.Object3D();
+					console.log('卡车',car)
+					// car.position.set(0, 11, 0);
+					// car.rotation.set(...fix.rot);
+					obj.add(car);
+					scene.add(obj);
+					cars.push(obj);
+					// console.log(obj,car,id)
+				}
+				
+				
+				
 				const box = new THREE.Box3().setFromObject(root);
 
 				const boxSize = box.getSize(new THREE.Vector3()).length();
@@ -148,7 +167,17 @@ export default {
 			scene.add(light);
 
 			id = setInterval(draw, 20);
-
+		function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+				const localPrefix = isLast ? '└─' : '├─';
+				lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+				const newPrefix = prefix + (isLast ? '  ' : '│ ');
+				const lastNdx = obj.children.length - 1;
+				obj.children.forEach((child, ndx) => {
+					const isLast = ndx === lastNdx;
+					dumpObject(child, lines, isLast, newPrefix);
+				});
+				return lines;
+			}
 			function draw() {
 				that.renderer.render(scene, camera);
 

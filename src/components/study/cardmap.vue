@@ -79,6 +79,9 @@ export default {
 				// https://threejsfundamentals.org/threejs/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf
 				const root = gltf.scene;
 				scene.add(root);
+				  console.log(dumpObject(root).join('\n'));
+				// console.log('rottt只',root.join('\n'))
+				console.log('rottt只',root.getObjectByName('Cars'))
 				const loadedCars = root.getObjectByName('Cars');
 				const fixes = [
 					{ prefix: 'Car_08', y: 0, rot: [Math.PI * 0.5, 0, Math.PI * 0.5] },
@@ -214,17 +217,17 @@ export default {
 				// 	mesh.rotation.y -= Math.PI * 2;
 				// }
 			}
-			// function dumpObject(obj, lines = [], isLast = true, prefix = '') {
-			// 	const localPrefix = isLast ? '└─' : '├─';
-			// 	lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
-			// 	const newPrefix = prefix + (isLast ? '  ' : '│ ');
-			// 	const lastNdx = obj.children.length - 1;
-			// 	obj.children.forEach((child, ndx) => {
-			// 		const isLast = ndx === lastNdx;
-			// 		dumpObject(child, lines, isLast, newPrefix);
-			// 	});
-			// 	return lines;
-			// }
+			function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+				const localPrefix = isLast ? '└─' : '├─';
+				lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+				const newPrefix = prefix + (isLast ? '  ' : '│ ');
+				const lastNdx = obj.children.length - 1;
+				obj.children.forEach((child, ndx) => {
+					const isLast = ndx === lastNdx;
+					dumpObject(child, lines, isLast, newPrefix);
+				});
+				return lines;
+			}
 			lx();
 			let curve;
 			let curveObject;
