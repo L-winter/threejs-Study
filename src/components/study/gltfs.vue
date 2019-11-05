@@ -92,30 +92,30 @@ export default {
 			loader.load('../obj/测试/scene.gltf', gltf => {
 				 root = gltf.scene;
 				scene.add(root);
-				// console.log(root)
-				console.log(dumpObject(root).join('\n'));
-				const loadedCars = root.getObjectByName('Disc');
+				console.log(root)
 				// from root and below
-				for (const car of loadedCars.children.slice()) {
-					// id++
-					// const fix = fixes.find(fix => car.name.startsWith(fix.prefix));
-					const obj = new THREE.Object3D();
-					console.log('卡车',car)
-					// car.position.set(0, 11, 0);
-					// car.rotation.set(...fix.rot);
-					obj.add(car);
-					scene.add(obj);
-					cars.push(obj);
-					// console.log(obj,car,id)
-				}
-				
-				
-				
+				console.log(dumpObject(root))
+
 				const box = new THREE.Box3().setFromObject(root);
 
 				const boxSize = box.getSize(new THREE.Vector3()).length();
 				const boxCenter = box.getCenter(new THREE.Vector3());
 				// console.log(boxSize);
+				let cars=[]
+				const loadedCars = root.getObjectByName('Neon');
+				for (const car of loadedCars.children.slice()) {
+					// id++
+					// const fix = fixes.find(fix => car.name.startsWith(fix.prefix));
+					const obj = new THREE.Object3D();
+					console.log('卡车',car)
+					car.material.emissive.setHex('0xFF0000')
+					// car.position.set(0, 33, 0);
+					// car.rotation.set(...fix.rot);
+					obj.add(car);
+					// scene.add(obj);
+					cars.push(obj);
+					// console.log(obj,car,id)
+				}
 
 				// set the camera to frame the box
 				frameArea(boxSize * 0.5, boxSize, boxCenter, camera);
@@ -135,7 +135,17 @@ export default {
 				// light.target = root;
 				// scene.add(light);
 				
-							
+							function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+								const localPrefix = isLast ? '└─' : '├─';
+								lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+								const newPrefix = prefix + (isLast ? '  ' : '│ ');
+								const lastNdx = obj.children.length - 1;
+								obj.children.forEach((child, ndx) => {
+									const isLast = ndx === lastNdx;
+									dumpObject(child, lines, isLast, newPrefix);
+								});
+								return lines;
+							}
 			function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {  //动态设置相机视角位置
 				const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
 				const halfFovY = THREE.Math.degToRad(camera.fov * 0.5);

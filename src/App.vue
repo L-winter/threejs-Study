@@ -6,8 +6,9 @@
 </template>
 
 <script>
-// import * as THREE from 'three';
+
 // import HelloWorld from './components/study/gltfs.vue'
+
 // import HelloWorld from './components/line.vue'
 
 export default {
