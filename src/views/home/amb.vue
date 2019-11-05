@@ -37,7 +37,7 @@
 			renderer.setClearColor(0xffffff);
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			this.renderer = renderer;
-			this.shadwMaterial()
+			this.direMaterial()
 			// },5000)
 			// console.log()
 		},
@@ -175,7 +175,7 @@
 			
 				scene.add(camera);
 			
-				let loader = new THREE.OBJLoader();
+				let loader = new OBJLoader();
 				loader.load('obj/port.obj', function(obj) {
 				obj.traverse(function(child) {
 					if (child instanceof THREE.Mesh) {

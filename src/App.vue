@@ -7,14 +7,14 @@
 
 <script>
 
-// import HelloWorld from './components/study/gltfs.vue'
+import HelloWorld from './components/study/shader.vue'
 
 // import HelloWorld from './components/line.vue'
 
 export default {
   name: 'app',
   components: {
-    // HelloWorld
+    HelloWorld
   },
   created() {
 	// window.THREE = THREE

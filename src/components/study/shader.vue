@@ -9,11 +9,14 @@
 	// import OrbitControls from "three/examples/js/controls/OrbitControls";
 	// import {OBJLoader} from 'three/examples/js/loaders/OBJLoader';
 	// import OrbitControls from "three/examples/js/controls/OrbitControls"
-	import { OBJLoader , MTLLoader} from 'three-obj-mtl-loader';
+	// import { OBJLoader , MTLLoader} from 'three-obj-mtl-loader';
 	// import OrbitControls from 'three/examples/js/controls/OrbitControls';
 	// import fonts from '../threex/controls/OrbitControls'
 	// let vShader=require('shader/my.vs'),fShader=require('shader/my.vs');
 	// import fontjson from '@static/examples/fonts/helvetiker_regular.typeface.json';
+	
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 	let scene = new THREE.Scene();
 	export default {
 		name: 'textfont',

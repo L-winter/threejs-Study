@@ -101,6 +101,10 @@ export default {
 					// const fix = fixes.find(fix => car.name.startsWith(fix.prefix));
 					const obj = new THREE.Object3D();
 					console.log('卡车',car)
+					// car.material.
+					// car.material.side = THREE.DoubleSide;
+						car.material= new THREE.MeshPhongMaterial({ color: 0xffff00 });
+					
 					// car.position.set(0, 0, 0);
 					// car.rotation.set(...fix.rot);
 					obj.add(car);
@@ -166,6 +170,13 @@ export default {
 			light.position.set(0, 0, 0);
 			scene.add(light);
 			
+			var   _spotLight = new THREE.SpotLight(0xffffff);
+			        _spotLight.castShadow = true;
+			        _spotLight.shadowCameraVisible = true;
+			        _spotLight.position.set(0,500,0);
+			 _spotLight.shadowMapWidth = _spotLight.shadowMapHeight = 1024*4;
+			        scene.add(_spotLight);
+					
 			// var light = new THREE.SpotLight(0x4C004F, 1, 100, Math.PI / 6, 25);  
 			// 				light.position.set(0, 5, 0);
 			// 				light.target = root;
@@ -189,20 +200,21 @@ export default {
 			}
 			function draw() {
 				that.renderer.render(scene, camera);
-				cars.forEach((car, ndx) => {
+				// console.log(cars)
+				// cars.forEach((car, ndx) => {
 					// a number between 0 and 1 to evenly space the cars
 					// var light = new THREE.SpotLight(0x4C004F, 1, 100, Math.PI / 6, 25);
 					// light.position.set(10, 0, 0);
 					// 				light.target = car;
-					console.log(car)
-					car.rotation.x += 0.01;
+					// console.log(car)
+					// car.rotation.x += 0.01;
 				// new THREE.MeshBasicMaterial({
 				// 	color: 0xff0000,
 				// 	wireframe: true
 				// })
 					// put the car between the 2 points
 					// car.position.lerpVectors(carPosition, carTarget, 0.5);
-				});
+				// });
 				// console.log(root)
 				// root.rotation.y += 0.01;
 				// if (mesh.rotation.y > Math.PI * 2) {

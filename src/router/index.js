@@ -57,6 +57,17 @@ export const constantRouterMap = [
 				name: 'home'
 		
 			}
+		},
+		{
+			path: 'amb',
+			name: 'test',
+			component: resolve => require(['@/views/home/amb'], resolve),
+			meta: {
+				title: 'gltf加载',
+				icon: 'home',
+				name: 'home'
+		
+			}
 		}
 		
 		]
