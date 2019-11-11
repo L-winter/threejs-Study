@@ -15,7 +15,7 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 // import  OBJLoader  from "three/examples/jsm/loaders/OBJLoader"
 // import  MTLLoader  from "three/examples/jsm/loaders/MTLLoader"
@@ -55,12 +55,12 @@ export default {
 
 			// var cubeMap = new THREE.CubeTextureLoader().load('../obj/测试/4c895e8e0ff541529da048cf5e09bab6.jpeg');
 			// scene.background=texture
-			var texture = new THREE.TextureLoader().load('../obj/测试/4c895e8e0ff541529da048cf5e09bab6.jpeg');
-			texture.wrapS = THREE.MirroredRepeatWrapping;
-			texture.wrapT = THREE.RepeatWrapping;
-			texture.repeat.set(1, 1);
+			// var texture = new THREE.TextureLoader().load('../obj/测试/4c895e8e0ff541529da048cf5e09bab6.jpeg');
+			// texture.wrapS = THREE.MirroredRepeatWrapping;
+			// texture.wrapT = THREE.RepeatWrapping;
+			// texture.repeat.set(1, 1);
 
-			scene.background = texture;
+			// scene.background = texture;
 
 			// var renderer = null;
 
@@ -86,74 +86,24 @@ export default {
 			controls.target.set(0, 2, 0);
 			controls.update();
 			let root = undefined;
-			var loader = new GLTFLoader();
+			var loader = new FBXLoader();
 			let cars = [];
-			loader.load('../obj/测试/scene.gltf', gltf => {
-				root = gltf.scene;
-				// root.traverse(function(child) {
-				// 	console.log(child)
-				// 	if (child.isMesh) {
-				// 		child.material.emissive = child.material.color;
-				// 		child.material.emissiveMap = child.material.map;
-				// 	}
-				// });
-				// scene.add(gltf.scene);
-				scene.add(root);
-				root.castShadow = true;
-				// console.log(root)
-				// console.log(dumpObject(root).join('\n'));
-				const loadedCars = root.getObjectByName('Lotus');
-				// from root and below
-				// console.log(loadedCars);
-
-				for (const car of loadedCars.children.slice()) {
-					// id++
-					// const fix = fixes.find(fix => car.name.startsWith(fix.prefix));
-					const obj = new THREE.Object3D();
-					// console.log('卡车',car)
-					// car.material.emissive=0xffffff
-					// car.material.
-					// car.material.side = THREE.DoubleSide;
-				    // car.material= new THREE.MeshPhongMaterial({ color: 0x3AB5C5 });
-					// if(car.name=='Lotus_Mat_8'){
-					// 	car.position.set(0, 500, 0);
-					// }
-					car.position.set(0, 30, 260);
-					if(car.name=='Lotus_Mat_8'){
-						console.log(car)
-						// var light = new THREE.PointLight(0xffffff,2,100);
-						// light.position.set(0, 1.5, 2);
-						
-						// scene.add(light);
-						
-						var light = new THREE.PointLight(0xffffff,10,100);
-						light.position.set(200, 100, -450);
-						
-						car.add(light);
-						
-						// car.position.set(0, 30, 260);
-						 car.material= new THREE.MeshPhongMaterial({ color: 0xffff00 });
-					}
-					// car.rotation.set(...fix.rot);
-					obj.add(car);
-					scene.add(obj);
-					cars.push(obj);
-					// console.log(obj,car,id)
-				}
-
-				const box = new THREE.Box3().setFromObject(root);
-
-				const boxSize = box.getSize(new THREE.Vector3()).length();
-				const boxCenter = box.getCenter(new THREE.Vector3());
-				// console.log(boxSize);
-
-				// set the camera to frame the box
-				frameArea(boxSize * 0.5, boxSize, boxCenter, camera);
-
-				// update the Trackball controls to handle the new size
-				controls.maxDistance = boxSize * 10;
-				controls.target.copy(boxCenter);
-				controls.update();
+			var mixers = [];
+			loader.load('../obj/carmaya/source/Lotus.fbx', object => {
+				   object.traverse( function ( child ) {
+				            scope.mixers=object.mixer = new THREE.AnimationMixer( object );
+				            var action = object.mixer.clipAction( object.animations[0]);
+				            action.play();
+				            if ( child.isMesh ) {
+				                child.castShadow = true;
+				                child.receiveShadow = true;
+				            }
+				        });
+				        object.scale.set(0.5,0.5,0.5);
+				        object.position.set(100,120,30);
+				        scope.scene.add(object);
+				        scope.personPre=object;
+				        scope.referenceModel = object.children[1];
 			});
 
 			// var light = new THREE.SpotLight(0xffff00, 1, 100, Math.PI / 6, 25);
@@ -192,24 +142,15 @@ export default {
 				camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 			}
 
-			// var light = new THREE.AmbientLight(0xffffff);
-			// light.position.set(0, 0, 0);
-			// scene.add(light);
+			var light = new THREE.AmbientLight(0xffffff);
+			light.position.set(0, 0, 0);
+			scene.add(light);
 
-			var _spotLight = new THREE.SpotLight(0x88008d);
-			_spotLight.castShadow = true;
-				_spotLight.penumbra = 1;
-			_spotLight.shadowCameraVisible = true;
-			_spotLight.position.set(0, 500, 0);
-			// _spotLight.target = root;
-			_spotLight.shadowMapWidth = _spotLight.shadowMapHeight = 1024*4;
-			scene.add(_spotLight);
-			
-			// var _spotLight = new THREE.SpotLight(0xFFFFFF);
+			// var _spotLight = new THREE.SpotLight(0x88008d);
 			// _spotLight.castShadow = true;
 			// 	_spotLight.penumbra = 1;
 			// _spotLight.shadowCameraVisible = true;
-			// _spotLight.position.set(0, 10, 0);
+			// _spotLight.position.set(0, 300, 0);
 			// // _spotLight.target = root;
 			// // _spotLight.shadowMapWidth = _spotLight.shadowMapHeight = 1024*4;
 			// scene.add(_spotLight);

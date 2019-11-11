@@ -49,7 +49,7 @@ export const constantRouterMap = [
 		},
 		{
 			path: 'gltf',
-			name: 'test',
+			name: 'gltf',
 			component: resolve => require(['@/views/home/gltfs'], resolve),
 			meta: {
 				title: 'gltf加载',
@@ -59,8 +59,30 @@ export const constantRouterMap = [
 			}
 		},
 		{
+			path: 'fbx',
+			name: 'fbx',
+			component: resolve => require(['@/views/home/fbx'], resolve),
+			meta: {
+				title: 'gltf加载',
+				icon: 'home',
+				name: 'home'
+		
+			}
+		},
+		// {
+		// 	path: 'guanggan',
+		// 	name: 'guanggan',
+		// 	component: resolve => require(['@/views/home/guanggan'], resolve),
+		// 	meta: {
+		// 		title: 'gltf加载',
+		// 		icon: 'home',
+		// 		name: 'home'
+		
+		// 	}
+		// },
+		{
 			path: 'amb',
-			name: 'test',
+			name: 'amb',
 			component: resolve => require(['@/views/home/amb'], resolve),
 			meta: {
 				title: 'gltf加载',

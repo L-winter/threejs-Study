@@ -10,8 +10,11 @@
 	// import {OBJLoader} from 'three/examples/js/loaders/OBJLoader';
 	// import OrbitControls from "three/examples/js/controls/OrbitControls"
 	// import { OBJLoader , MTLLoader} from 'three-obj-mtl-loader';
-	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+	// import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+	// import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 	// import OrbitControls from 'three/examples/js/controls/OrbitControls';
 	// import fonts from '../threex/controls/OrbitControls'
 
@@ -56,7 +59,7 @@
 
 				scene.add(camera);
 
-				let loader = new THREE.OBJLoader();
+				let loader = new OBJLoader();
 				
 				loader.load('obj/port.obj', function(obj) {
 				obj.traverse(function(child) {
@@ -119,7 +122,7 @@
 
 				scene.add(camera);
 
-				let loader = new THREE.OBJLoader();
+				let loader = new OBJLoader();
 				loader.load('obj/port.obj', function(obj) {
 				obj.traverse(function(child) {
 					if (child instanceof THREE.Mesh) {
