@@ -69,17 +69,17 @@ export const constantRouterMap = [
 		
 			}
 		},
-		// {
-		// 	path: 'guanggan',
-		// 	name: 'guanggan',
-		// 	component: resolve => require(['@/views/home/guanggan'], resolve),
-		// 	meta: {
-		// 		title: 'gltf加载',
-		// 		icon: 'home',
-		// 		name: 'home'
+		{
+			path: 'guanggan',
+			name: 'guanggan',
+			component: resolve => require(['@/views/home/guanggan'], resolve),
+			meta: {
+				title: 'gltf加载',
+				icon: 'home',
+				name: 'home'
 		
-		// 	}
-		// },
+			}
+		},
 		{
 			path: 'amb',
 			name: 'amb',
