@@ -78,10 +78,10 @@ export default {
 			scene.add(light);
 			scene.add(new THREE.AmbientLight(0xffffff, 0.25));
 
-			var obj = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 4), new THREE.MeshLambertMaterial({color: "aqua", wireframe: false}));
-			obj.layers.set(0);
-			obj.position.z = 0.25;
-			scene.add(obj);
+			// var obj = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 4), new THREE.MeshLambertMaterial({color: "aqua", wireframe: false}));
+			// obj.layers.set(0);
+			// obj.position.z = 0.25;
+			// scene.add(obj);
 
 			var objBack = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 1), 
 			new THREE.MeshBasicMaterial({ color: 'red', wireframe: false })
@@ -93,8 +93,8 @@ export default {
 			/** COMPOSER */
 			var renderScene = new RenderPass(scene, camera);
 
-			// var effectFXAA = new ShaderPass(FXAAShader);
-			// effectFXAA.uniforms.resolution.value.set( 1 / window.innerWidth, 1 / window.innerHeight )
+			var effectFXAA = new ShaderPass(FXAAShader);
+			effectFXAA.uniforms.resolution.value.set( 1 / window.innerWidth, 1 / window.innerHeight )
 
 			var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
 			bloomPass.threshold = 0.21;
@@ -120,11 +120,11 @@ export default {
 
 				renderer.clear();
 
-				// camera.layers.set(1);
+				camera.layers.set(1);
 				composer.render();
 
 				renderer.clearDepth();
-				// camera.layers.set(0);
+				camera.layers.set(0);
 				renderer.render(scene, camera);
 			}
 		}

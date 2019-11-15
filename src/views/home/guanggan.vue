@@ -13,6 +13,8 @@ import * as THREE from 'three';
 // import { OBJLoader , MTLLoader} from 'three-obj-mtl-loader';
 // import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -59,7 +61,13 @@ export default {
 			// var scene = new THREE.Scene();
 
 			var group = new THREE.Group()
-			
+			var params = {
+							x: 1,
+							y: 1.5,
+							z: 0,
+							bloomRadius: 0
+						};
+						
 			var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
 			camera.position.set(0, 0, 10);
 			camera.layers.enable(1);
@@ -78,9 +86,17 @@ export default {
 			// scene.add(light);
 			// scene.add(new THREE.AmbientLight(0xffffff, 0.25));
 
-			var light = new THREE.AmbientLight(0xffffff);
-			light.position.set(10, 30, -300);
-			scene.add(light);
+			// var light = new THREE.AmbientLight(0xffffff);
+			// light.position.set(3, 0, 30);
+			// scene.add(light);
+			
+			// var light = new THREE.DirectionalLight(0xffffff, 0.75);
+			// light.position.setScalar(100);
+			// scene.add(light);
+			// scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+			var light = new THREE.HemisphereLight( 0xffffbb, 0x080820,0.8 );
+scene.add( light );
+			
 
 			var obj = new THREE.Mesh(new THREE.BoxGeometry(55, 55, 4), new THREE.MeshLambertMaterial({ color: 'aqua', wireframe: false }));
 
@@ -108,12 +124,12 @@ export default {
 			var objBackA = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 10), new THREE.MeshBasicMaterial({ color: '0xffffff', wireframe: false }));
 			// objBack.position.z = -2.25;
 			// objBack.position.set(0, 100, 260);
-			objBackA.position.set(150, 30, -400);
+			objBackA.position.set(310, 30, -400);
 			// objBackA.rotation.y = 180;
 			// root.rotation.y += 0.01;
 			objBackA.layers.set(1);
 			// scene.add(objBackA);
-				group.add( objBackA );
+			group.add( objBackA );
 
 			/** COMPOSER */
 			var renderScene = new RenderPass(scene, camera);
@@ -121,7 +137,7 @@ export default {
 			// var effectFXAA = new ShaderPass(FXAAShader);
 			// effectFXAA.uniforms.resolution.value.set( 1 / window.innerWidth, 1 / window.innerHeight )
 
-			var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+			var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 5, 0.4, 0.85);
 			bloomPass.threshold = 0;
 			// bloomPass.strength = 1.2;
 			// bloomPass.radius = 0.55;
@@ -146,35 +162,38 @@ export default {
 
 			loader.load('../obj/测试/scene.gltf', gltf => {
 				root = gltf.scene;
+				root.layers.set(0);
 				group.add( root );
 				// scene.add(root);
 
 				root.castShadow = true;
-
+				
 				// console.log(root)
 				// console.log(dumpObject(root).join('\n'));
 				const loadedCars = root.getObjectByName('Lotus');
 				// loadedCars.layers.set(1);
 
-				// for (const car of loadedCars.children.slice()) {
-					// const obj = new THREE.Object3D();
+				for (const car of loadedCars.children.slice()) {
 					
-					// car.material.depthWrite = true;
-					// car.position.set(0, 30, 260);
+					const obj = new THREE.Object3D();
+					
+					car.material.depthWrite = true;
+					car.position.set(0, 30, 260);
 
-					// if (car.name == 'Lotus_Mat_8') {
-					// 	// car.position.set(0, 30, 240);
-					// 	car.material = new THREE.MeshBasicMaterial({ color: 'red', wireframe: false });
-					// 	car.material.depthWrite = false;
-					// 	console.log(car)
-					// 	// car.layers.set(1);
-					// }
+					if (car.name == 'Lotus_Mat_8') {
+						car.position.set(0, 30, 240);
+						car.material = new THREE.MeshBasicMaterial({ color: '0xffffff', wireframe: false });
+						car.material.depthWrite = false;
+						// console.log(car)
+						car.layers.set(1);
+					}
 					// console.log(obj,car)
-					// obj.add(car);
+					obj.add(car);
 					// console.log(obj)
+					group.add( car );
 					// scene.add(car);
-					// cars.push(obj);
-				// }
+					cars.push(obj);
+				}
 
 				const box = new THREE.Box3().setFromObject(root);
 
@@ -223,12 +242,37 @@ export default {
 			
 			scene.add(group);
 			render();
+				group.rotation.y = 3.3;
+				
+				var gui = new GUI();
+				gui.add( params, 'x', 0.1, 500 ).onChange( function ( value ) {
+					// light.position.set(3, 0, 30);
+					light.position.x=value
+					// renderer.toneMappingExposure = Math.pow( value, 4.0 );
+				
+				} );
+				gui.add( params, 'y', 0.1, 500 ).onChange( function ( value ) {
+					// light.position.set(3, 0, 30);
+					light.position.y=value
+					// renderer.toneMappingExposure = Math.pow( value, 4.0 );
+				
+				} );
+				gui.add( params, 'z', 0.1, 500 ).onChange( function ( value ) {
+					// light.position.set(3, 0, 30);
+					light.position.z=value
+					// renderer.toneMappingExposure = Math.pow( value, 4.0 );
+				
+				} );
+				
+							
 			function render() {
 				requestAnimationFrame(render);
-
+		renderer.toneMappingExposure = Math.pow( 0.8, 5.0 ); // to allow for very bright scenes.
+				renderer.shadowMap.enabled = true;
+				
 				renderer.clear();
 				// root.position.r
-				group.rotation.y += 0.01;
+				// group.rotation.y += 0.01;
 				camera.layers.set(1);
 				composer.render();
 
